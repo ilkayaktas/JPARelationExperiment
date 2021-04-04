@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Bean;
 
 import java.util.List;
 import java.util.Optional;
@@ -18,10 +19,11 @@ public class JpaRelationExperimentApplication {
         SpringApplication.run(JpaRelationExperimentApplication.class, args);
     }
 
+    @Bean
     public CommandLineRunner studentRepositoryRunner(StudentRepository repository) {
         return (args) -> {
             Student student = new Student();
-            student.setName("Ana");
+            student.setName("Ahmet");
             student.setId(1L);
 
             Tuition tuition = new Tuition();
@@ -42,7 +44,7 @@ public class JpaRelationExperimentApplication {
 
 
             University university = new University();
-            university.setName("Universidad de Las Palmas de Gran Canaria");
+            university.setName("Üniversite");
 
             Student student1 = new Student();
             student1.setName("AAAA");
@@ -91,10 +93,10 @@ public class JpaRelationExperimentApplication {
     public CommandLineRunner courseRepositoryRunner(StudentRepository studentRepository) {
         return (args) -> {
             Course course = new Course();
-            course.setName("Adas");
+            course.setName("Ada");
 
             Student student1 = new Student();
-            student1.setName("AAAA");
+            student1.setName("Ayşe");
             student1.setCourses(Set.of(course));
 
             studentRepository.save(student1);
