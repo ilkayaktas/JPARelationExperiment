@@ -1,5 +1,6 @@
 package com.ilkayaktas.jparelationexperiment;
 
+import com.ilkayaktas.jparelationexperiment.manytoone.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.CommandLineRunner;
@@ -20,6 +21,36 @@ public class JpaRelationExperimentApplication {
     }
 
     @Bean
+    public CommandLineRunner groupRepository(GroupTestRepository groupTestRepository,
+                                             UserTestRepository userTestRepository,
+                                             GroupMemberTestRepository groupMemberTestRepository){
+        return (args) -> {
+            Group group = new Group();
+            group.setName("İlkay");
+            group = groupTestRepository.save(group);
+
+            User user = new User();
+            user.setName("Ahmet");
+            user = userTestRepository.save(user);
+
+            GroupMember groupMember = new GroupMember();
+//            groupMember.setGroupId(group.getId());
+//            groupMember.setUserId(user.getId());
+            groupMember.setUser(user);
+            groupMember.setGroup(group);
+            groupMember.setTime(System.currentTimeMillis());
+            groupMember = groupMemberTestRepository.save(groupMember);
+
+            Optional<GroupMember> member = groupMemberTestRepository.findById(groupMember.getId());
+            if (member.isPresent()){
+                logger.info("Grup adı "+member.get().getGroup().getName() + "\n" +
+                        "Kişi adı "+member.get().getUser().getName() + "\n" +
+                        "Zaman "+member.get().getTime());
+            }
+
+        };
+    }
+
     public CommandLineRunner studentRepositoryRunner(StudentRepository repository) {
         return (args) -> {
             Student student = new Student();
